@@ -10,6 +10,16 @@ jobs:
           for f in *.zip; do unzip -o "$f" -d src; done
           D=$(dirname "$(find src -name settings.gradle.kts | head -1)")
           echo "APPDIR=$D" >> $GITHUB_ENV
+      - name: Fix JVM target
+        run: |
+          cat >> "$APPDIR/app/build.gradle.kts" <<'EOF'
+          android {
+              compileOptions {
+                  sourceCompatibility = JavaVersion.VERSION_17
+                  targetCompatibility = JavaVersion.VERSION_17
+              }
+          }
+          EOF
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
