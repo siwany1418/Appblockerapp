@@ -5,7 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: unzip -o AppBlocker_Source_with_HTML.zip -d src
+      - name: Unzip
+        run: |
+          for f in *.zip; do unzip -o "$f" -d src; done
+          D=$(dirname "$(find src -name settings.gradle.kts | head -1)")
+          echo "APPDIR=$D" >> $GITHUB_ENV
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -14,8 +18,8 @@ jobs:
         with:
           gradle-version: 8.9
       - run: gradle assembleDebug --no-daemon
-        working-directory: src/android
+        working-directory: ${{ env.APPDIR }}
       - uses: actions/upload-artifact@v4
         with:
           name: AppBlocker-apk
-          path: src/android/app/build/outputs/apk/debug/app-debug.apk
+          path: ${{ env.APPDIR }}/app/build/outputs/apk/debug/app-debug.apk
