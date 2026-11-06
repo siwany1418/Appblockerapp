@@ -13,7 +13,9 @@ jobs:
       - name: Fix JVM target
         run: |
           printf '\nandroid {\n  compileOptions {\n    sourceCompatibility = JavaVersion.VERSION_17\n    targetCompatibility = JavaVersion.VERSION_17\n  }\n}\n' >> "$APPDIR/app/build.gradle.kts"
-          cat "$APPDIR/app/build.gradle.kts"
+      - name: Fix settings action
+        run: |
+          sed -i 's/Settings.ACTION_ACCESSIBILITY_DETAILS_SETTINGS/"android.settings.ACCESSIBILITY_DETAILS_SETTINGS"/' "$APPDIR/app/src/main/java/com/example/appblocker/MainActivity.kt"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
