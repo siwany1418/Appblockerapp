@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="AppBlocker로 원하는 앱을 요일과 시간에 맞춰 관리하고 집중 시간을 만들어 보세요.">
+<title>AppBlocker — 나에게 집중하는 시간</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#141d33;--line:rgba(177,197,239,.15);--ink:#f4f7ff;--muted:#aab6cf;--blue:#a9c4ff;--mint:#7ce0d7}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 8% 12%,rgba(73,105,190,.18),transparent 36%),radial-gradient(ellipse at 95% 42%,rgba(42,163,160,.12),transparent 32%),var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans KR","Segoe UI",sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}.wrap{width:min(1080px,calc(100% - 40px));margin:auto}
+header{height:76px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;letter-spacing:-.04em}.logo{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;color:#091326;font-weight:900;background:linear-gradient(145deg,var(--blue),var(--mint));box-shadow:0 6px 24px #719de833}.navtag{font-size:12px;color:var(--muted)}
+.hero{padding:76px 0 66px;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;gap:44px}.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:8px 12px;background:#18254188;color:#c9d9ff;font-size:12px;letter-spacing:.07em}.dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint)}
+h1{font-size:clamp(42px,6vw,66px);line-height:1.12;letter-spacing:-.065em;margin:22px 0 18px}h1 span{background:linear-gradient(100deg,var(--blue),var(--mint));color:transparent;background-clip:text}.lead{max-width:520px;color:var(--muted);font-size:16px;line-height:1.9;margin:0 0 25px}
+.actions{display:flex;gap:11px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 19px;border-radius:12px;font-weight:750;font-size:14px;transition:transform .18s,filter .18s}.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}.primary{background:linear-gradient(110deg,var(--blue),var(--mint));color:#0a1527;box-shadow:0 9px 28px #75b8d52b}.secondary{border:1px solid var(--line);background:#18243d88;color:#e3ebff}.hint{font-size:12px;color:#7f8da9;margin-top:13px}
+.preview{display:flex;justify-content:center;align-items:center;min-height:450px;position:relative}.halo{position:absolute;width:340px;height:340px;border:1px solid #9dbbff20;border-radius:50%}.halo:before,.halo:after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 15px var(--blue)}.halo:before{top:40px;left:43px}.halo:after{right:18px;bottom:65px;background:var(--mint);box-shadow:0 0 15px var(--mint)}
+.phone{z-index:1;width:224px;padding:9px;border-radius:31px;border:1px solid #c2d1f34a;background:linear-gradient(145deg,#303d5c,#111a2e);box-shadow:0 28px 75px #0008,inset 0 1px #ffffff20;transform:rotate(-3deg)}
+.screen{height:414px;border-radius:23px;background:#f2f5ff;color:#18213a;padding:17px 13px;overflow:hidden}.notch{width:70px;height:15px;border-radius:0 0 12px 12px;background:#202a42;margin:-17px auto 15px}.screenbar{display:flex;justify-content:space-between;font-size:10px;color:#78839b}.screen h3{font-size:18px;letter-spacing:-.05em;margin:22px 0 4px}.screen .sub{font-size:10px;color:#8490a7;margin:0}.state{margin:16px 0 10px;background:#dff5e9;color:#26764f;padding:10px;border-radius:11px;font-size:10px;font-weight:750}.appitem{display:flex;align-items:center;gap:8px;background:white;border-radius:12px;padding:10px 8px;margin:8px 0;box-shadow:0 3px 12px #20355b0b;font-size:10px}.appico{width:27px;height:27px;border-radius:8px;background:#e9edff;color:#526dc5;display:grid;place-items:center;font-weight:800}.appitem small{display:block;color:#929bb0;font-size:8px;margin-top:3px}.switch{margin-left:auto;width:29px;height:17px;border-radius:20px;background:#6684e5;position:relative;flex:none}.switch:after{content:"";position:absolute;right:2px;top:2px;width:13px;height:13px;border-radius:50%;background:#fff}.screenfoot{margin-top:14px;padding:10px;border-radius:10px;background:#e8edfa;color:#62708d;font-size:9px;text-align:center}
+.promo{margin:0 0 78px;padding:24px 26px;border:1px solid #8ca9e52b;border-radius:18px;background:linear-gradient(105deg,#263c68a8,#17434a77);display:flex;align-items:center;justify-content:space-between;gap:20px}.promo strong{display:block;font-size:17px;margin-bottom:6px}.promo p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}.pill{flex:none;border:1px solid #7ce0d744;border-radius:99px;padding:8px 12px;color:#b5eee8;font-size:11px;letter-spacing:.05em}
+.features{padding-bottom:80px}.sectionhead{text-align:center;margin-bottom:28px}.sectionhead h2{font-size:29px;letter-spacing:-.05em;margin:0 0 9px}.sectionhead p{font-size:14px;color:var(--muted);margin:0}.featuregrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.feature{padding:20px;border:1px solid var(--line);border-radius:16px;background:#131d33bb;min-height:190px}.ficon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#8eafff1c;color:var(--blue);font-size:19px}.feature h3{font-size:15px;margin:15px 0 7px}.feature p{font-size:13px;line-height:1.7;color:var(--muted);margin:0}
+.detail{padding:0 0 78px}.detailrow{display:grid;grid-template-columns:1fr 1fr;gap:16px}.detailbox{padding:22px;border-radius:17px;border:1px solid var(--line);background:#121c31b8}.detailbox h3{margin:0 0 9px;font-size:16px}.detailbox p{margin:0;color:var(--muted);font-size:13px;line-height:1.8}.taglist{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}.taglist span{font-size:11px;color:#c6d6f8;border:1px solid var(--line);background:#1b2945;padding:6px 9px;border-radius:99px}
+.download{padding:30px;text-align:center;border:1px solid #9bb8f52b;border-radius:20px;background:linear-gradient(120deg,#1c2b4a,#17383d);margin-bottom:70px}.download h2{font-size:25px;letter-spacing:-.04em;margin:0 0 8px}.download p{font-size:13px;color:var(--muted);margin:0 0 20px;line-height:1.7}.lang{font-size:11px;color:#9eabc4;margin-top:13px}
+footer{border-top:1px solid var(--line);padding:23px 0 30px;color:#7f8ba5;font-size:12px;display:flex;justify-content:space-between;gap:12px}
+@media(max-width:760px){.hero{grid-template-columns:1fr;gap:14px;padding:52px 0 42px}.preview{min-height:430px}.promo{align-items:flex-start;flex-direction:column;margin-bottom:62px}.featuregrid{grid-template-columns:1fr}.feature{min-height:0}.detailrow{grid-template-columns:1fr}.navtag{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="brand" href="#"><span class="logo">A</span><span>AppBlocker</span></a><span class="navtag">나에게 집중하는 시간</span></header>
+<main>
+<section class="hero">
+<div>
+<div class="eyebrow"><span class="dot"></span> 내 시간, 내 규칙</div>
+<h1>방해는 줄이고<br><span>집중은 높이고.</span></h1>
+<p class="lead">원하는 앱을 선택하고 요일과 시간을 설정해 보세요. 공부할 때도, 쉴 때도 스마트폰 사용 습관을 스스로 관리할 수 있어요.</p>
+<div class="actions">
+<a class="btn primary" href="https://github.com/siwany1418/Appblockerapp/releases/latest" target="_blank" rel="noopener">↓ 안드로이드 앱 다운로드</a>
+<a class="btn secondary" href="#features">주요 기능 보기</a>
+</div>
+<div class="hint">Android APK · 무료 다운로드 · 현재 한국어 지원</div>
+</div>
+<div class="preview" aria-label="앱 화면 예시">
+<div class="halo"></div>
+<div class="phone">
+<div class="screen">
+<div class="notch"></div>
+<div class="screenbar"><b>AppBlocker</b><span>9:41</span></div>
+<h3>오늘도 집중해 볼까요?</h3><p class="sub">나에게 맞는 사용 규칙을 설정해요.</p>
+<div class="state">● 차단 서비스가 준비되었어요</div>
+<div class="appitem"><span class="appico">▶</span><span>YouTube<small>공부 시간에 차단</small></span><i class="switch"></i></div>
+<div class="appitem"><span class="appico">◎</span><span>소셜 앱<small>평일 일정 적용</small></span><i class="switch"></i></div>
+<div class="appitem"><span class="appico">◷</span><span>집중 잠금<small>2시간 공부 모드</small></span><i class="switch"></i></div>
+<div class="screenfoot">원하는 앱과 시간을 직접 관리하세요</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="promo">
+<div><strong>오늘의 시간을 더 의미 있게</strong><p>앱을 무조건 멀리하기보다, 내가 정한 시간에 맞춰 사용을 관리해 보세요.</p></div>
+<span class="pill">작은 습관부터 시작</span>
+</section>
+
+<section class="features" id="features">
+<div class="sectionhead"><h2>필요한 기능을 한눈에</h2><p>복잡한 설정 대신, 직접 고르고 간단하게 관리하세요.</p></div>
+<div class="featuregrid">
+<article class="feature"><div class="ficon">▣</div><h3>차단할 앱 선택</h3><p>기기에 설치된 앱을 불러오고, 사용을 제한할 앱을 직접 골라 켜고 끌 수 있어요.</p></article>
+<article class="feature"><div class="ficon">◷</div><h3>요일·시간 예약</h3><p>요일과 시작·종료 시간을 정해 일정에 맞춰 앱 차단 규칙을 설정할 수 있어요.</p></article>
+<article class="feature"><div class="ficon">⌛</div><h3>집중 잠금</h3><p>공부 시간 2시간 또는 취침 시간 8시간 집중 잠금 기능을 사용할 수 있어요.</p></article>
+<article class="feature"><div class="ficon">◆</div><h3>강력 모드</h3><p>지원되는 차단 시간 동안 설정 변경이나 차단 해제를 어렵게 만들어 집중을 도와줘요.</p></article>
+<article class="feature"><div class="ficon">↺</div><h3>비상 쉬기</h3><p>필요할 때 사용할 수 있는 15분 쉬기 기능이 포함되어 있어요.</p></article>
+<article class="feature"><div class="ficon">⌘</div><h3>Android와 Windows</h3><p>Android 앱과 Windows 보조 프로그램을 제공해 각 기기에서 앱 사용을 관리할 수 있어요.</p></article>
+</div>
+</section>
+
+<section class="detail">
+<div class="sectionhead"><h2>설치 전에 확인해 주세요</h2><p>앱을 올바르게 사용하기 위한 안내입니다.</p></div>
+<div class="detailrow">
+<div class="detailbox"><h3>접근성 권한 안내</h3><p>Android에서 실제 앱 차단 기능을 사용하려면 설치 후 설정에서 AppBlocker 접근성 서비스를 직접 허용해야 합니다.</p><div class="taglist"><span>사용자 직접 허용</span><span>Android</span></div></div>
+<div class="detailbox"><h3>지원 언어</h3><p>현재 앱의 인터페이스는 한국어로 제공됩니다. 이 홈페이지는 앱의 주요 기능과 사용 방법을 소개합니다.</p><div class="taglist"><span>한국어 앱</span><span>무료 APK</span></div></div>
+</div>
+</section>
+
+<section class="download" id="download">
+<h2>집중할 준비가 되었나요?</h2>
+<p>AppBlocker 최신 Android 버전을 다운로드해 보세요.<br>다운로드 페이지에서 최신 APK 파일을 선택할 수 있습니다.</p>
+<a class="btn primary" href="https://github.com/siwany1418/Appblockerapp/releases/latest" target="_blank" rel="noopener">↓ AppBlocker 다운로드</a>
+<div class="lang">현재 한국어 지원 · Android APK</div>
+</section>
+</main>
+<footer><span>© 2026 AppBlocker</span><span>나에게 집중하는 시간</span></footer>
+</div>
+</body>
+</html>
