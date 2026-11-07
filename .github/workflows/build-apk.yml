@@ -1,5 +1,10 @@
 name: Build APK
 on: [push, workflow_dispatch]
+permissions:
+  contents: write
+env:
+  KS_B64: ${{ secrets.KS_B64 }}
+  KS_PASS: ${{ secrets.KS_PASS }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,12 +15,14 @@ jobs:
           unzip -o AppBlocker_Source.zip -d src
           D=$(dirname "$(find src -name settings.gradle.kts | head -1)")
           echo "APPDIR=$D" >> $GITHUB_ENV
-      - name: Fix JVM target
+      - name: Fix JVM target and signing
         run: |
           printf '\nandroid {\n  compileOptions {\n    sourceCompatibility = JavaVersion.VERSION_17\n    targetCompatibility = JavaVersion.VERSION_17\n  }\n}\n' >> "$APPDIR/app/build.gradle.kts"
-      - name: Fix settings action
-        run: |
-          sed -i 's/Settings.ACTION_ACCESSIBILITY_DETAILS_SETTINGS/"android.settings.ACCESSIBILITY_DETAILS_SETTINGS"/' "$APPDIR/app/src/main/java/com/example/appblocker/MainActivity.kt"
+          if [ -n "$KS_B64" ]; then
+            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/fixed.jks"
+            echo "KS_PATH=$RUNNER_TEMP/fixed.jks" >> $GITHUB_ENV
+            printf '\nandroid {\n  signingConfigs {\n    create("fixed") {\n      storeFile = file(System.getenv("KS_PATH"))\n      storePassword = System.getenv("KS_PASS")\n      keyAlias = "appblocker"\n      keyPassword = System.getenv("KS_PASS")\n    }\n  }\n  buildTypes {\n    getByName("debug") { signingConfig = signingConfigs.getByName("fixed") }\n  }\n}\n' >> "$APPDIR/app/build.gradle.kts"
+          fi
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -25,7 +32,10 @@ jobs:
           gradle-version: 8.9
       - run: gradle assembleDebug --no-daemon
         working-directory: ${{ env.APPDIR }}
-      - uses: actions/upload-artifact@v4
-        with:
-          name: AppBlocker-apk
-          path: ${{ env.APPDIR }}/app/build/outputs/apk/debug/app-debug.apk
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp "$APPDIR/app/build/outputs/apk/debug/app-debug.apk" AppBlocker.apk
+          gh release delete latest --yes --cleanup-tag --repo "$GITHUB_REPOSITORY" || true
+          gh release create latest AppBlocker.apk --repo "$GITHUB_REPOSITORY" --title "AppBlocker 최신 버전" --notes "AppBlocker.apk를 눌러서 받으세요"
