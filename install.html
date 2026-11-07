@@ -1,0 +1,78 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AppBlocker 설치 안내</title>
+<style>
+:root{--bg:#0b1020;--card:#141c34;--line:#26304f;--ink:#f1f4ff;--mut:#b7c1de;--acc:#8fd3c8;--acc2:#9bb4ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#1c2a55,var(--bg) 60%);color:var(--ink);font:17px/1.6 system-ui,sans-serif}
+main{max-width:600px;margin:0 auto;padding:20px}a{color:var(--acc)}h1{font-size:30px;margin:10px 0 4px}p{color:var(--mut);margin:0}
+.phone{position:relative;width:250px;height:500px;margin:22px auto 14px;border:8px solid #2a3558;border-radius:36px;background:#fff;overflow:hidden;color:#222;font-size:13px}
+.sb{position:absolute;top:0;left:0;right:0;height:26px;padding:6px 16px;font-size:11px;display:flex;justify-content:space-between;color:#555;z-index:5}
+.scr{position:absolute;inset:0;padding-top:28px;background:#fff;overflow:hidden;animation:in .35s}
+.url{margin:6px 10px;padding:7px 11px;border-radius:14px;background:#eef0f6;font-size:11px;color:#555}
+.pad{padding:14px}.h1x{font-weight:700;font-size:16px}.btn2{display:inline-block;margin-top:10px;padding:10px 14px;border-radius:12px;background:#4a63d8;color:#fff;font-weight:700}
+.row2{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #eee}
+.tgl{width:40px;height:22px;border-radius:11px;background:#bbb;position:relative;transition:.4s;margin-left:auto;flex:none}.tgl:after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.4s}.tgl.on{background:#4a63d8}.tgl.on:after{left:21px}
+.hg{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 2px;padding:34px 8px;height:100%;background:linear-gradient(160deg,#cfd8ff,#e8d9ff);font-size:10px;text-align:center}
+.hg i{display:grid;place-items:center;width:42px;height:42px;margin:0 auto 4px;border-radius:12px;font-style:normal;font-size:19px;color:#fff}
+.ai{display:inline-grid;place-items:center;width:54px;height:54px;border-radius:15px;background:linear-gradient(135deg,#9bb4ff,#8fd3c8);color:#0b1020;font:700 26px system-ui;font-style:normal}
+.pf{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#e8745a;color:#fff;font-style:normal;font-weight:700}
+.toast{position:absolute;left:12px;right:12px;bottom:18px;padding:10px 12px;border-radius:12px;background:#333;color:#fff;font-size:12px;animation:in .3s}
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.45)}.menu{position:absolute;left:12px;right:12px;top:60px;background:#fff;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.sheet{position:absolute;left:0;right:0;bottom:0;padding:20px 16px;background:#fff;border-radius:20px 20px 0 0}
+.bt{display:flex;justify-content:space-between;margin-top:18px;font-weight:700;color:#4a63d8}.bt span{padding:6px 4px}
+.sp{width:34px;height:34px;border:4px solid #dde;border-top-color:#4a63d8;border-radius:50%;margin:170px auto 12px;animation:spin 1s linear infinite}
+.ctr{text-align:center}.bot{position:absolute;left:14px;right:14px;bottom:16px}
+#fg{position:absolute;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;background:rgba(255,120,60,.45);border:2px solid #ff7a3c;left:200px;top:450px;opacity:0;transition:left .8s ease,top .8s ease,opacity .3s;z-index:9;pointer-events:none}
+#fg.tap{animation:tp .5s}
+@keyframes in{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes tp{50%{transform:scale(.55)}}
+@media(prefers-reduced-motion:reduce){.scr,.toast,.sp{animation:none}}
+.info{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;min-height:118px}.info b{display:block;font-size:19px;margin-bottom:4px}
+.ctl{display:flex;gap:8px;justify-content:center;margin:12px 0}
+button{font:inherit;border:1px solid var(--line);border-radius:12px;padding:10px 16px;background:var(--card);color:var(--ink)}
+.dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--acc)}
+.dl{display:block;text-align:center;padding:15px;border-radius:14px;font-weight:700;text-decoration:none;color:#0b1020;background:linear-gradient(135deg,var(--acc2),var(--acc))}
+</style></head><body><main>
+<a href="index.html">← 처음으로</a>
+<h1>설치 안내</h1><p>폰 화면이 저절로 움직이며 14단계를 보여줘요. 주황색 동그라미가 누르는 곳이에요.</p>
+<div class="phone" id="ph"><div class="sb"><span>6:04</span><span>▮▮▮</span></div><div id="vw"></div><div id="fg"></div></div>
+<div class="info"><b id="t"></b><span id="d"></span></div>
+<div class="ctl"><button id="prev">◀ 이전</button><button id="play">⏸ 멈춤</button><button id="next">다음 ▶</button></div>
+<div class="dots" id="dots"></div>
+<a class="dl" href="https://github.com/siwany1418/Appblockerapp/releases/latest/download/AppBlocker.apk">↓ 안드로이드 앱 다운로드</a>
+<p style="text-align:center;margin-top:14px">폰 기종에 따라 화면 모양과 순서가 조금 다를 수 있어요.</p>
+</main><script>
+const $=s=>document.querySelector(s),vw=$('#vw'),fg=$('#fg'),ph=$('#ph');
+const url=u=>'<div class="url">'+u+'</div>',toast=m=>()=>vw.firstChild.insertAdjacentHTML('beforeend','<div class="toast">'+m+'</div>');
+const home=()=>'<div class="hg">'+[['전화','#3dbb6a','☎'],['메시지','#3b7bf5','✉'],['Play 스토어','#2f9e6a','▶','pl'],['내 파일','#f0a020','▤','fm'],['카메라','#7a8399','◉'],['설정','#6c7a96','⚙'],['크롬','#e8453c','◍'],['AppBlocker','#4a63d8','A']].map(a=>'<div'+(a[3]?' id="'+a[3]+'"':'')+'><i style="background:'+a[1]+'">'+a[2]+'</i>'+a[0]+'</div>').join('')+'</div>';
+const store='<div class="url" style="display:flex;justify-content:space-between;align-items:center">🔍 앱 및 게임 검색<i class="pf" id="x3">나</i></div><div class="pad"><div class="h1x">추천 앱</div><p style="color:#888">오늘의 추천 · 인기 게임 · 새로 나온 앱</p></div>';
+const S=[
+{t:'홈페이지에서 다운로드 누르기',d:'AppBlocker 홈페이지의 ‘안드로이드 앱 다운로드’ 버튼을 눌러요.',h:url('siwany1418.github.io')+'<div class="pad"><div class="h1x">AppBlocker</div><p style="color:#666">방해는 줄이고 집중은 높이고.</p><span class="btn2" id="x0">↓ 안드로이드 앱 다운로드</span></div>',g:'#x0',a:toast('다운로드를 시작해요…')},
+{t:'GitHub에서 APK 받기',d:'GitHub 릴리스 화면에서 AppBlocker.apk를 눌러 받아요. 다운로드 완료 알림이 뜨면 돼요.',h:url('github.com › Releases › latest')+'<div class="pad"><b>AppBlocker 최신 버전</b></div><div class="row2" id="x1">📦 AppBlocker.apk<small style="margin-left:auto;color:#888">3.4 MB</small></div><div class="row2" style="color:#999">Source code (zip)</div>',g:'#x1',a:toast('AppBlocker.apk 다운로드 완료')},
+{t:'홈 화면으로 돌아가기',d:'홈 화면으로 나와서 Play 스토어를 열어요. APK를 설치하기 전에 먼저 해둘 일이 있어요.',h:home(),g:'#pl'},
+{t:'프로필 사진 누르기',d:'Play 스토어 오른쪽 위의 프로필 사진을 눌러요.',h:store,g:'#x3'},
+{t:'Play 프로텍트 누르기',d:'메뉴에서 ‘Play 프로텍트’를 눌러요.',h:store+'<div class="dim"></div><div class="menu"><div class="row2" id="x4">🛡 Play 프로텍트</div><div class="row2">💳 결제 및 정기 결제</div><div class="row2">📱 앱 및 기기 관리</div></div>',g:'#x4'},
+{t:'설정 누르기',d:'Play 프로텍트 화면 오른쪽 위의 톱니바퀴(설정)를 눌러요.',h:'<div class="row2"><b>←</b><b>Play 프로텍트</b><span id="x5" style="margin-left:auto;font-size:18px">⚙</span></div><div class="pad ctr"><div style="font-size:44px">🛡</div><div class="h1x">기기가 보호되고 있어요</div></div>',g:'#x5'},
+{t:'앱 스캔 끄기',d:'‘앱 스캔’ 옆의 스위치를 눌러 꺼짐으로 바꿔요. 설치가 끝나면 다시 켜도 돼요.',h:'<div class="row2"><b>←</b><b>설정</b></div><div class="row2"><div>앱 스캔<br><small style="color:#888">기기의 유해한 앱을 검사해요</small></div><i class="tgl on" id="x6"></i></div>',g:'#x6',a:()=>$('#x6').classList.remove('on')},
+{t:'홈 화면으로 돌아가기',d:'다시 홈 화면으로 나와서 ‘내 파일’ 앱을 열어요.',h:home(),g:'#fm'},
+{t:'받은 APK 누르기',d:'다운로드 폴더에서 AppBlocker.apk 파일을 눌러요.',h:'<div class="row2"><b>←</b><b>내 파일 › 다운로드</b></div><div class="row2" id="x8">📦 AppBlocker.apk<small style="margin-left:auto;color:#888">3.4 MB</small></div>',g:'#x8'},
+{t:'잠깐 기다리기',d:'설치 화면이 준비될 때까지 잠깐 기다려요.',h:'<div class="sp"></div><div class="ctr" style="color:#666">불러오는 중…</div>',m:1700},
+{t:'설치 누르기',d:'위에 앱 아이콘이 보이면, 오른쪽 ‘설치’ 버튼을 눌러요. 왼쪽은 취소예요.',h:'<div class="ctr" style="padding-top:50px"><i class="ai">A</i><div class="h1x" style="margin-top:8px">AppBlocker</div><p style="color:#555;margin-top:18px">이 앱을 설치하시겠습니까?</p></div><div class="bot bt"><span>취소</span><span id="x10">설치</span></div>',g:'#x10'},
+{t:'무시하고 앱 설치 누르기',d:'아래에 ‘이 앱을 정말로 설치할까요?’ 창이 뜨면, 왼쪽 ‘무시하고 앱 설치’를 눌러요. 오른쪽은 취소예요.',h:'<div class="ctr" style="padding-top:50px"><i class="ai">A</i><div class="h1x" style="margin-top:8px">AppBlocker</div></div><div class="dim"></div><div class="sheet"><b>이 앱을 정말로 설치할까요?</b><p style="color:#666;margin-top:6px">스토어에서 받은 앱이 아니에요.</p><div class="bt"><span id="x11">무시하고 앱 설치</span><span>취소</span></div></div>',g:'#x11'},
+{t:'설치되는 중',d:'설치가 끝날 때까지 기다려요.',h:'<div class="sp"></div><div class="ctr" style="color:#666">설치하는 중…</div>',m:2000},
+{t:'설치 완료!',d:'위에 ‘설치가 완료되었습니다’가 뜨면 끝이에요. 아래 왼쪽은 완료, 오른쪽은 열기예요.',h:'<div class="ctr" style="padding-top:50px"><i class="ai">A</i><div class="h1x" style="margin-top:12px;color:#0a8f3c">✓ 설치가 완료되었습니다</div></div><div class="bot bt"><span>완료</span><span>열기</span></div>',m:3500}];
+let i=0,run=0,playing=!matchMedia('(prefers-reduced-motion:reduce)').matches;
+S.forEach(()=>$('#dots').append(document.createElement('i')));
+function go(n){const r=++run,s=S[i=(n+S.length)%S.length],at=(f,ms)=>setTimeout(()=>{if(r===run)f()},ms);
+ vw.innerHTML='<div class="scr">'+s.h+'</div>';fg.style.transition='none';fg.style.opacity=0;fg.className='';fg.style.left='200px';fg.style.top='450px';
+ $('#t').textContent=(i+1)+'. '+s.t;$('#d').textContent=s.d;
+ document.querySelectorAll('#dots i').forEach((e,k)=>e.className=k===i?'on':'');
+ const nx=()=>{if(playing)go(i+1)};
+ if(!s.g){at(nx,s.m||2000);return}
+ at(()=>{const e=$(s.g).getBoundingClientRect(),p=ph.getBoundingClientRect();fg.style.transition='';fg.style.opacity=1;fg.style.left=(e.left-p.left+e.width/2-8)+'px';fg.style.top=(e.top-p.top+e.height/2-8)+'px'},500);
+ at(()=>fg.classList.add('tap'),1500);at(()=>{if(s.a)s.a()},1900);at(()=>{fg.style.opacity=0},2300);at(nx,3000)}
+function stop(){playing=false;$('#play').textContent='▶ 재생'}
+$('#prev').onclick=()=>{stop();go(i-1)};$('#next').onclick=()=>{stop();go(i+1)};
+$('#play').onclick=()=>{if(playing){stop()}else{playing=true;$('#play').textContent='⏸ 멈춤';go(i)}};
+go(0);if(!playing)stop();
+</script></body></html>
