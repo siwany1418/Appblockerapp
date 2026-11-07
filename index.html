@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="AppBlocker helps you build better digital habits with scheduled app blocking and focus sessions.">
+  <title>AppBlocker — Take back your focus</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1020;
+      --panel: rgba(19, 28, 51, .78);
+      --line: rgba(164, 184, 230, .15);
+      --text: #f5f7ff;
+      --muted: #aab5ce;
+      --blue: #83aaff;
+      --cyan: #77e4df;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh; overflow-x: hidden;
+      background:
+        radial-gradient(ellipse at 15% 10%, rgba(69, 105, 190, .18), transparent 38%),
+        radial-gradient(ellipse at 88% 35%, rgba(49, 173, 174, .10), transparent 32%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: inherit; }
+    .glow {
+      position: fixed; z-index: -1; width: 320px; height: 320px; border-radius: 50%;
+      filter: blur(75px); opacity: .17; pointer-events: none;
+      background: #527ff5; top: 35%; left: -170px;
+      animation: drift 13s ease-in-out infinite alternate;
+    }
+    .glow.two { width: 260px; height: 260px; background: #39c8bd; left: auto; right: -150px; top: 12%; animation-delay: -5s; }
+    @keyframes drift { from { transform: translate3d(0,-18px,0) scale(.9); } to { transform: translate3d(35px,35px,0) scale(1.12); } }
+    .wrap { width: min(1060px, calc(100% - 40px)); margin: auto; }
+    nav { height: 78px; display:flex; align-items:center; justify-content:space-between; }
+    .brand { display:flex; align-items:center; gap:11px; font-weight:750; letter-spacing:-.03em; }
+    .logo {
+      width:34px; height:34px; border-radius:11px; display:grid; place-items:center;
+      color:#081326; font-weight:900; background:linear-gradient(145deg,#a9c4ff,#6ce1d8);
+      box-shadow:0 5px 24px rgba(111,167,255,.25);
+    }
+    .nav-note { color:var(--muted); font-size:13px; }
+    .hero { padding:88px 0 68px; display:grid; grid-template-columns:1.05fr .95fr; gap:54px; align-items:center; }
+    .eyebrow {
+      display:inline-flex; align-items:center; gap:8px; padding:7px 11px; border:1px solid var(--line);
+      border-radius:99px; color:#c7d8ff; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+      background:rgba(24,37,68,.55);
+    }
+    .dot { width:7px; height:7px; border-radius:50%; background:var(--cyan); box-shadow:0 0 12px var(--cyan); }
+    h1 { margin:22px 0 17px; font-size:clamp(42px,6vw,68px); line-height:1.04; letter-spacing:-.055em; }
+    h1 span { background:linear-gradient(100deg,#a9c4ff 10%,#7ce0dc 90%); color:transparent; background-clip:text; }
+    .lead { max-width:510px; color:var(--muted); font-size:17px; line-height:1.75; margin:0 0 27px; }
+    .actions { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+    .button {
+      display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:14px 20px;
+      border-radius:12px; text-decoration:none; font-size:14px; font-weight:750; transition:transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .button:hover { transform:translateY(-3px); }
+    .primary { color:#091326; background:linear-gradient(110deg,#a9c4ff,#7ce0dc); box-shadow:0 10px 30px rgba(105,157,235,.2); }
+    .secondary { border:1px solid var(--line); color:#dce5fa; background:rgba(20,30,54,.55); }
+    .hint { margin-top:13px; color:#7f8ba7; font-size:12px; }
+    .visual { min-height:390px; display:grid; place-items:center; position:relative; }
+    .orbit { position:absolute; width:310px; height:310px; border:1px solid rgba(151,181,241,.14); border-radius:50%; animation:spin 32s linear infinite; }
+    .orbit:before,.orbit:after { content:""; position:absolute; width:9px; height:9px; border-radius:50%; background:#8eb5ff; box-shadow:0 0 18px #8eb5ff; }
+    .orbit:before { top:35px; left:42px; }.orbit:after { bottom:44px; right:20px; background:#72ded5; box-shadow:0 0 18px #72ded5; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .phone {
+      position:relative; width:min(270px,75vw); padding:13px; border-radius:32px;
+      border:1px solid rgba(200,216,255,.25); background:linear-gradient(145deg,rgba(42,57,91,.96),rgba(14,21,39,.98));
+      box-shadow:0 30px 90px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.13);
+      transform:rotate(-5deg); animation:float 5s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100% { transform:translateY(0) rotate(-5deg); } 50% { transform:translateY(-12px) rotate(-3deg); } }
+    .screen { min-height:340px; padding:19px 15px; border-radius:22px; background:linear-gradient(160deg,#f5f7ff,#e8eefb); color:#17213b; }
+    .screen-top { display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#6c7894; }
+    .screen h3 { font-size:20px; margin:24px 0 5px; letter-spacing:-.04em; }
+    .screen p { margin:0; color:#77829b; font-size:11px; }
+    .status { margin:18px 0 12px; padding:12px; border-radius:13px; background:#e0f6eb; color:#23744d; font-size:11px; font-weight:700; }
+    .mock-row { display:flex; align-items:center; gap:10px; padding:11px 9px; margin-top:8px; border-radius:12px; background:white; box-shadow:0 2px 8px rgba(33,52,91,.05); font-size:11px; }
+    .app-icon { width:28px; height:28px; display:grid; place-items:center; border-radius:9px; background:#e8edff; color:#526bc1; font-weight:800; }
+    .mock-row small { display:block; color:#8b95aa; margin-top:3px; }
+    .toggle { margin-left:auto; width:29px; height:17px; border-radius:20px; background:#627fe0; position:relative; }
+    .toggle:after { content:""; position:absolute; right:2px; top:2px; width:13px; height:13px; border-radius:50%; background:white; }
+    .promo {
+      margin:16px 0 76px; padding:24px 27px; display:flex; justify-content:space-between; align-items:center; gap:20px;
+      border:1px solid rgba(137,172,238,.2); border-radius:19px;
+      background:linear-gradient(105deg,rgba(43,66,111,.58),rgba(24,57,68,.42));
+      box-shadow:0 18px 55px rgba(0,0,0,.12);
+    }
+    .promo strong { display:block; font-size:17px; margin-bottom:5px; }
+    .promo p { margin:0; color:var(--muted); font-size:13px; line-height:1.6; }
+    .promo-label { flex:none; color:#bcece5; border:1px solid rgba(124,224,220,.25); border-radius:99px; padding:8px 12px; font-size:11px; letter-spacing:.07em; }
+    .features { padding-bottom:82px; }
+    .section-head { text-align:center; margin-bottom:27px; }
+    .section-head h2 { margin:0 0 9px; font-size:28px; letter-spacing:-.04em; }
+    .section-head p { color:var(--muted); margin:0; font-size:14px; }
+    .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .card { border:1px solid var(--line); border-radius:16px; padding:21px; background:rgba(18,27,48,.66); transition:transform .22s,border-color .22s; }
+    .card:hover { transform:translateY(-5px); border-color:rgba(143,180,255,.4); }
+    .icon { width:37px; height:37px; display:grid; place-items:center; border-radius:11px; background:rgba(125,164,255,.13); color:#a9c4ff; font-size:18px; }
+    .card h3 { margin:16px 0 8px; font-size:15px; }
+    .card p { margin:0; color:var(--muted); font-size:13px; line-height:1.65; }
+    footer { border-top:1px solid var(--line); padding:23px 0 32px; color:#77839e; font-size:12px; display:flex; justify-content:space-between; gap:12px; }
+    @media(max-width:760px) {
+      .hero { padding:52px 0 30px; grid-template-columns:1fr; gap:20px; }
+      .visual { min-height:350px; }
+      .promo { margin-bottom:60px; align-items:flex-start; flex-direction:column; }
+      .cards { grid-template-columns:1fr; }
+      .nav-note { display:none; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important; transition-duration:.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div><div class="glow two"></div>
+  <div class="wrap">
+    <nav>
+      <div class="brand"><span class="logo">A</span><span>AppBlocker</span></div>
+      <span class="nav-note">A little more focus. A little less distraction.</span>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> YOUR TIME, YOUR RULES</div>
+          <h1>Take back<br><span>your focus.</span></h1>
+          <p class="lead">Build better digital habits with scheduled app blocking, focus sessions, and simple controls. Make room for what matters.</p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/siwany1418/Appblockerapp/releases/latest" target="_blank" rel="noopener">
+              ↓ &nbsp; Download for Android
+            </a>
+            <a class="button secondary" href="#features">Explore features</a>
+          </div>
+          <div class="hint">Android APK · Free download · Install from your device</div>
+        </div>
+
+        <div class="visual" aria-label="AppBlocker app preview">
+          <div class="orbit"></div>
+          <div class="phone">
+            <div class="screen">
+              <div class="screen-top"><b>AppBlocker</b><span>9:41</span></div>
+              <h3>Stay in control.</h3>
+              <p>Your focus starts with one small choice.</p>
+              <div class="status">● Focus mode is ready</div>
+              <div class="mock-row"><span class="app-icon">▶</span><span>YouTube<small>Blocked during study time</small></span><i class="toggle"></i></div>
+              <div class="mock-row"><span class="app-icon">◎</span><span>Social apps<small>Schedule active</small></span><i class="toggle"></i></div>
+              <div class="mock-row"><span class="app-icon">◷</span><span>Focus session<small>2 hours</small></span><i class="toggle"></i></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="promo" aria-label="App introduction">
+        <div>
+          <strong>Less scrolling. More doing.</strong>
+          <p>Set your schedule, choose the apps you want to limit, and keep your attention on your next goal.</p>
+        </div>
+        <span class="promo-label">FOCUS ON WHAT MATTERS</span>
+      </section>
+
+      <section class="features" id="features">
+        <div class="section-head">
+          <h2>Simple tools. Better habits.</h2>
+          <p>Everything you need to make your screen time more intentional.</p>
+        </div>
+        <div class="cards">
+          <article class="card"><div class="icon">◷</div><h3>Scheduled blocking</h3><p>Choose the days and times when selected apps should be blocked.</p></article>
+          <article class="card"><div class="icon">◎</div><h3>Focus sessions</h3><p>Start a dedicated study or sleep session and reduce distractions.</p></article>
+          <article class="card"><div class="icon">✓</div><h3>Your choice, your control</h3><p>Select the apps you want to limit and adjust your settings when needed.</p></article>
+        </div>
+      </section>
+    </main>
+
+    <footer><span>© 2026 AppBlocker</span><span>Made for a more focused day.</span></footer>
+  </div>
+</body>
+</html>
