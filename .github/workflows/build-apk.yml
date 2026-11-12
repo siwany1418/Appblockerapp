@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Unzip source
+        run: unzip -o AppBlocker_Source_v2_*.zip -d src
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -17,8 +19,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.10.2
-      - run: gradle -p android assembleDebug --no-daemon
-      - run: cp android/app/build/outputs/apk/debug/app-debug.apk AppBlocker.apk
+      - run: gradle -p src/android assembleDebug --no-daemon
+      - run: cp src/android/app/build/outputs/apk/debug/app-debug.apk AppBlocker.apk
       - run: |
           git tag -f latest
           git push -f origin latest
