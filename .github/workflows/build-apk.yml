@@ -1,41 +1,30 @@
 name: Build APK
-on: [push, workflow_dispatch]
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
 permissions:
   contents: write
-env:
-  KS_B64: ${{ secrets.KS_B64 }}
-  KS_PASS: ${{ secrets.KS_PASS }}
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unzip
-        run: |
-          unzip -o AppBlocker_Source.zip -d src
-          D=$(dirname "$(find src -name settings.gradle.kts | head -1)")
-          echo "APPDIR=$D" >> $GITHUB_ENV
-      - name: Fix JVM target and signing
-        run: |
-          printf '\nandroid {\n  compileOptions {\n    sourceCompatibility = JavaVersion.VERSION_17\n    targetCompatibility = JavaVersion.VERSION_17\n  }\n}\n' >> "$APPDIR/app/build.gradle.kts"
-          if [ -n "$KS_B64" ]; then
-            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/fixed.jks"
-            echo "KS_PATH=$RUNNER_TEMP/fixed.jks" >> $GITHUB_ENV
-            printf '\nandroid {\n  signingConfigs {\n    create("fixed") {\n      storeFile = file(System.getenv("KS_PATH"))\n      storePassword = System.getenv("KS_PASS")\n      keyAlias = "appblocker"\n      keyPassword = System.getenv("KS_PASS")\n    }\n  }\n  buildTypes {\n    getByName("debug") { signingConfig = signingConfigs.getByName("fixed") }\n  }\n}\n' >> "$APPDIR/app/build.gradle.kts"
-          fi
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: 8.9
-      - run: gradle assembleDebug --no-daemon
-        working-directory: ${{ env.APPDIR }}
-      - name: Publish release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          cp "$APPDIR/app/build/outputs/apk/debug/app-debug.apk" AppBlocker.apk
-          gh release delete latest --yes --cleanup-tag --repo "$GITHUB_REPOSITORY" || true
-          gh release create latest AppBlocker.apk --repo "$GITHUB_REPOSITORY" --title "AppBlocker 최신 버전" --notes "AppBlocker.apk를 눌러서 받으세요"
+          gradle-version: 8.10.2
+      - run: gradle -p android assembleDebug --no-daemon
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk AppBlocker.apk
+      - run: |
+          git tag -f latest
+          git push -f origin latest
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: AppBlocker 최신 버전
+          body: AppBlocker.apk를 눌러서 받으세요
+          files: AppBlocker.apk
